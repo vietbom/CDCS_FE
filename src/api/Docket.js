@@ -1,6 +1,5 @@
 import { create } from "zustand"
 import { axiosInstance } from "../lib/axios"
-import { getDockets } from "../../../backend/src/controllers/docket.controller"
 
 export const useDocketStore = create((set) => ({
   dockets: [],
