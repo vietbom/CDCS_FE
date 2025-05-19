@@ -8,7 +8,11 @@
 
 import axios from "axios";
 
+const baseURL = import.meta.env.PROD 
+    ? "https://cdcs-be1.onrender.com"
+    : "http://localhost:8017";
+
 export const axiosInstance = axios.create({
-    baseURL: "https://cdcs-be1.onrender.com",
-    withCredentials:true
+    baseURL,
+    withCredentials: true
 })
