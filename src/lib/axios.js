@@ -14,5 +14,24 @@ const baseURL = import.meta.env.PROD
 
 export const axiosInstance = axios.create({
     baseURL,
-    withCredentials: true
-})
+    withCredentials: true,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+});
+
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response) {
+            console.error('Response Error:', error.response.data);
+        } else if (error.request) {
+            console.error('Request Error:', error.request);
+        } else {
+            console.error('Error:', error.message);
+        }
+        return Promise.reject(error);
+    }
+);
