@@ -9,7 +9,7 @@ export const adminStore = create((set) =>({
 
     checkAdminAuth: async() => {
         try {
-            const res = await axiosInstance.get('/admin/check')
+            const res = await axiosInstance.get('/api/admin/check')
             console.log('FE: checkAuth thành công', res.data)
             set({authAdmin: res.data})
         } catch (error) {
@@ -21,7 +21,7 @@ export const adminStore = create((set) =>({
     },
     signUp: async(data)=>{
         try {
-            const res = await axiosInstance.post('/admin/signUp', data)
+            const res = await axiosInstance.post('/api/admin/signUp', data)
             return res.data
         } catch (error) {
             console.error('SignUp error:', error)
@@ -33,7 +33,7 @@ export const adminStore = create((set) =>({
     adminLogin: async (data) => {
         set({ isLogin: true })
         try {
-            const res = await axiosInstance.post('/admin/login', data)
+            const res = await axiosInstance.post('/api/admin/login', data)
             set({ authAdmin: res.data })
             return res.data
         } catch (error) {
@@ -46,7 +46,7 @@ export const adminStore = create((set) =>({
     },
     adminLogout: async() =>{
         try {
-            await axiosInstance.post('/admin/logout')
+            await axiosInstance.post('/api/admin/logout')
             set({ authAdmin: null })
         } catch (error) {
             console.error('Login error response:', error.response) 
@@ -54,7 +54,7 @@ export const adminStore = create((set) =>({
     },
     getStudent: async() =>{
         try {
-            const res = await axiosInstance.get('/admin/getStudent')
+            const res = await axiosInstance.get('/api/admin/getStudent')
             set({students: res.data})
             return res.data
         } catch (error) {
@@ -65,7 +65,7 @@ export const adminStore = create((set) =>({
     },
     findStudent: async(searchText)=>{
         try {
-            const res = await axiosInstance.post('/admin/findStudent', {infoUser: searchText})
+            const res = await axiosInstance.post('/api/admin/findStudent', {infoUser: searchText})
             return res.data
         } catch (error) {
             console.error('lỗi tìm kiếm sinh viên ', error)
@@ -74,7 +74,7 @@ export const adminStore = create((set) =>({
     updateStudent: async (selectedStudent) => {
         try {
             const { _id, MaSV, userName, classroom, email, SDT } = selectedStudent
-            const res = await axiosInstance.post(`/admin/updateStudent/${_id}`, {
+            const res = await axiosInstance.post(`/api/admin/updateStudent/${_id}`, {
             MaSV,
             userName,
             classroom,
@@ -103,7 +103,7 @@ export const adminStore = create((set) =>({
 
     deleteStudent: async(_id) => {
         try {
-            axiosInstance.delete(`/admin/delStudent/${_id}`)
+            axiosInstance.delete(`/api/admin/delStudent/${_id}`)
             set((state) => ({
                 students: state.students.filter((student) => student._id !== _id)
             }))
@@ -114,7 +114,7 @@ export const adminStore = create((set) =>({
     },
     addStudent: async(newStudent) => {
         try {
-            const res = await axiosInstance.post('/admin/addStudent', newStudent)
+            const res = await axiosInstance.post('/api/admin/addStudent', newStudent)
             set((state) =>({students: [...state.students, res.data]}))
             return res.data
         } catch (error) {

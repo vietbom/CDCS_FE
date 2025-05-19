@@ -6,7 +6,7 @@ export const cardStore = create((set) => ({
 
     findCard: async (searchText) => {
         try {
-            const res = await axiosInstance.post('/card/findCard', { MaThe: searchText });
+            const res = await axiosInstance.post('/api/card/findCard', { MaThe: searchText });
             const foundCards = res.data?.data || [];
             set({ cards: foundCards });
             return foundCards;
@@ -20,7 +20,7 @@ export const cardStore = create((set) => ({
 
     updateCardStatus: async () => {
         try {
-            await axiosInstance.post('/card/updateCard');
+            await axiosInstance.post('/api/card/updateCard');
         } catch (error) {
             console.error('Lỗi cập nhật trạng thái thẻ:', error);
             throw error;
@@ -29,7 +29,7 @@ export const cardStore = create((set) => ({
 
     getCard: async () => {
         try {
-            const res = await axiosInstance.get('/card/getCard');
+            const res = await axiosInstance.get('/api/card/getCard');
             if (res.data && Array.isArray(res.data.data)) {
                 set({ cards: res.data.data });
             } else {
@@ -45,7 +45,7 @@ export const cardStore = create((set) => ({
 
     reactiveCard: async (_id, ngayHetHan) => {
         try {
-            const res = await axiosInstance.post(`/card/reactiveCard/${_id}`, { ngayHetHan });
+            const res = await axiosInstance.post(`/api/card/reactiveCard/${_id}`, { ngayHetHan });
             const updatedCard = res.data.data;
 
             if (updatedCard) {

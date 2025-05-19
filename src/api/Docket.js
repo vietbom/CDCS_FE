@@ -6,7 +6,7 @@ export const useDocketStore = create((set) => ({
 
   createDocket: async (newDocket) => {
     try {
-      const res = await axiosInstance.post('/docket/creatDocket', newDocket)
+      const res = await axiosInstance.post('/api/docket/creatDocket', newDocket)
       const data = res.data?.data
 
       set((state) => ({
@@ -22,7 +22,7 @@ export const useDocketStore = create((set) => ({
 
   findDocket: async(searchText) => {
     try {
-      const res = await axiosInstance.post('/docket/findDocket', {infoDocket: searchText})
+      const res = await axiosInstance.post('/api/docket/findDocket', {infoDocket: searchText})
       const foundDockets = res.data || []
       set({dockets: foundDockets})
       return foundDockets
@@ -35,7 +35,7 @@ export const useDocketStore = create((set) => ({
 
   getDockets: async() => {
     try {
-      const res = await axiosInstance.get('/docket/getDocket')
+      const res = await axiosInstance.get('/api/docket/getDocket')
       set({dockets: res.data?.data || []})
       return res.data
     } catch (error) {
@@ -47,7 +47,7 @@ export const useDocketStore = create((set) => ({
 
   returnBook: async (docketId, bookId, actualReturnDate = new Date()) => {
     try {
-      const res = await axiosInstance.post(`/docket/returnBook/${docketId}`, {
+      const res = await axiosInstance.post(`/api/docket/returnBook/${docketId}`, {
         booksReturn: [{ IdBook: bookId }],
         ngayTra: actualReturnDate
       });
@@ -62,7 +62,7 @@ export const useDocketStore = create((set) => ({
 
   getBorrowedBooks: async (MaSV) => {
     try {
-      const response = await axiosInstance.get('/docket/getBorrowedBooks', {
+      const response = await axiosInstance.get('/api/docket/getBorrowedBooks', {
         params: { MaSV: MaSV },
       })
       set({ dockets: response.data })

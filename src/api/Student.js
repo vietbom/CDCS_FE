@@ -9,7 +9,7 @@ export const studentStore = create((set) => ({
 
     checkStudentAuth: async () => {
         try {
-            const res = await axiosInstance.get('/student/check')
+            const res = await axiosInstance.get('/api/student/check')
             console.log('FE: checkAuth thành công', res.data)
             set({ authUser: res.data })
             return res.data
@@ -24,7 +24,7 @@ export const studentStore = create((set) => ({
 
     signUp: async (data) => {
         try {
-            const res = await axiosInstance.post('/student/signUp', data)
+            const res = await axiosInstance.post('/api/student/signUp', data)
             return res.data
         } catch (error) {
             console.error('SignUp error:', error)
@@ -35,7 +35,7 @@ export const studentStore = create((set) => ({
     login: async (data) => {
         set({ isStudentLogin: true, error: null })
         try {
-            const res = await axiosInstance.post('/student/login', data)
+            const res = await axiosInstance.post('/api/student/login', data)
             set({ authUser: res.data, error: null })
             return res.data
         } catch (error) {
@@ -49,7 +49,7 @@ export const studentStore = create((set) => ({
 
     logout: async () => {
         try {
-            await axiosInstance.post('/student/logout')
+            await axiosInstance.post('/api/student/logout')
             set({ authUser: null })
         } catch (error) {
             console.error('Logout error:', error)

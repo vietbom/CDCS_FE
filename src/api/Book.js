@@ -8,7 +8,7 @@ export const useBookStore = create((set) => ({
 
   addBook: async (data) => {
     try {
-      const res = await axiosInstance.post("/book/addBook", data)
+      const res = await axiosInstance.post("/api/book/addBook", data)
       set((state) => ({ books: [...state.books, res.data] }))
       return res.data
     } catch (error) {
@@ -20,7 +20,7 @@ export const useBookStore = create((set) => ({
   getBook: async () => {
     set({ isLoading: true, error: null })
     try {
-      const res = await axiosInstance.get("/book/getBook")
+      const res = await axiosInstance.get("/api/book/getBook")
       set({ books: res.data, error: null, isLoading: false })
       return res.data
     } catch (error) {
@@ -33,7 +33,7 @@ export const useBookStore = create((set) => ({
   searchBook: async (searchText) => {
     set({ isLoading: true, error: null })
     try {
-        const res = await axiosInstance.post("/book/searchBook", { infoBook: searchText })
+        const res = await axiosInstance.post("/api/book/searchBook", { infoBook: searchText })
         set({ error: null, isLoading: false })
         return res.data
     } catch (error) {
@@ -46,7 +46,7 @@ export const useBookStore = create((set) => ({
   updateBook: async (selectedBook) => {
     try {
       const { _id, IdBook, bookName, author, NXB, soLuong, pdfUrl, description } = selectedBook
-      const res = await axiosInstance.post(`/book/updateBook/${_id}`, {
+      const res = await axiosInstance.post(`/api/book/updateBook/${_id}`, {
         IdBook,
         bookName,
         author,
@@ -74,7 +74,7 @@ export const useBookStore = create((set) => ({
 
   deleteBook: async (_id) => {
     try {
-      await axiosInstance.delete(`/book/deleteBook/${_id}`)
+      await axiosInstance.delete(`/api/book/deleteBook/${_id}`)
       set((state) => ({
         books: state.books.filter((book) => book._id !== _id),
       }))
@@ -86,7 +86,7 @@ export const useBookStore = create((set) => ({
 
   getPDF : async (fileName) => {
   try {
-    const res = await axiosInstance.get(`/book/getPDF/${fileName}`, { responseType: 'blob' })
+    const res = await axiosInstance.get(`/api/book/getPDF/${fileName}`, { responseType: 'blob' })
     const fileURL = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }))
     window.open(fileURL)
   } catch (error) {
