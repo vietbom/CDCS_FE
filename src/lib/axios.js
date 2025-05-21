@@ -12,25 +12,17 @@ export const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     }
+})
+
+axiosInstance.interceptors.request.use((config) => {
+  if (!config.url.includes('/login') && !config.url.includes('/register')) {
+    const token = localStorage.getItem('token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
-// Request interceptor
-axiosInstance.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        console.log('Making request to:', config.url);
-        return config;
-    },
-    (error) => {
-        console.error('Request Error:', error);
-        return Promise.reject(error);
-    }
-);
 
-// Response interceptor
 axiosInstance.interceptors.response.use(
     (response) => {
         console.log('Response received:', response.status); 
