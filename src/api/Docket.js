@@ -65,7 +65,7 @@ export const useDocketStore = create((set) => ({
       const response = await axiosInstance.get('/api/docket/getBorrowedBooks', {
         params: { MaSV: MaSV },
       })
-      set({ dockets: response.data })
+      set({ dockets: response.data.data })
     } catch (error) {
       console.error('Error fetching borrowed books:', error)
     }

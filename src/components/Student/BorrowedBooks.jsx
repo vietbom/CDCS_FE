@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
-import { studentStore } from '../../api/Student';
-import { useDocketStore } from '../../api/Docket';
+import React, { useEffect } from 'react'
+import { studentStore } from '../../api/Student'
+import { useDocketStore } from '../../api/Docket'
 
 const BorrowedBooks = () => {
-  const { authUser } = studentStore();
-  const { dockets, getBorrowedBooks } = useDocketStore();
+  const { authUser } = studentStore()
+  const { dockets, getBorrowedBooks } = useDocketStore()
 
   useEffect(() => {
     if (authUser?.MaSV) {
-      getBorrowedBooks(authUser.MaSV);
+      getBorrowedBooks(authUser.MaSV)
     }
-  }, [authUser, getBorrowedBooks]);
+  }, [authUser, getBorrowedBooks])
 
   const calculateOverdueDays = (ngayHenTra, ngayTra) => {
-    if (ngayTra) return 0;
-    const dueDate = new Date(ngayHenTra);
-    const today = new Date();
-    const diffTime = today.getTime() - dueDate.getTime();
-    return diffTime > 0 ? Math.floor(diffTime / (1000 * 60 * 60 * 24)) : 0;
-  };
+    if (ngayTra) return 0
+    const dueDate = new Date(ngayHenTra)
+    const today = new Date()
+    const diffTime = today.getTime() - dueDate.getTime()
+    return diffTime > 0 ? Math.floor(diffTime / (1000 * 60 * 60 * 24)) : 0
+  }
 
   return (
     <div className="w-full p-4">
@@ -41,12 +41,11 @@ const BorrowedBooks = () => {
             <tbody>
               {dockets.length > 0 ? (
                 dockets.map((docket, index) => (
-                  <tr key={docket._id}>
+                  <tr key={docket.docketObjectId}>
                     <td className="py-2 px-3 border text-sm">{index + 1}</td>
                     <td className="py-2 px-3 border text-sm">
-                      {docket.IdBook ? docket.IdBook.bookName : 'Không có thông tin'}
+                      {docket.book ? docket.book.bookName : 'Không có thông tin'}
                     </td>
-
                     <td className="py-2 px-3 border text-sm">
                       {new Date(docket.ngayMuon).toLocaleDateString()}
                     </td>
@@ -62,14 +61,14 @@ const BorrowedBooks = () => {
                     <td className="py-2 px-3 border text-sm">{docket.soLuongMuon}</td>
                     <td
                       className={`py-2 px-3 border text-sm font-semibold ${
-                        docket.status === 'active'
+                        docket.statusDocket === 'active'
                           ? 'text-green-600'
-                          : docket.status === 'overdue'
+                          : docket.statusDocket === 'overdue'
                           ? 'text-red-600'
                           : 'text-gray-600'
                       }`}
                     >
-                      {docket.status}
+                      {docket.statusDocket}
                     </td>
                   </tr>
                 ))
@@ -85,7 +84,7 @@ const BorrowedBooks = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BorrowedBooks;
+export default BorrowedBooks

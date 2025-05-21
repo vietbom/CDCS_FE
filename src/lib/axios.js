@@ -12,22 +12,21 @@ const baseURL = import.meta.env.PROD
     ? "https://cdcs-be1.onrender.com"
     : "http://localhost:8017";
 
-console.log('Current API URL:', baseURL); // Debug log
+console.log('Current API URL:', baseURL);
 
 export const axiosInstance = axios.create({
     baseURL,
     withCredentials: true,
-    timeout: 15000, // Increased timeout
+    timeout: 15000, 
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 });
 
-// Request interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-        console.log('Making request to:', config.url); // Debug log
+        console.log('Making request to:', config.url);
         return config;
     },
     (error) => {
@@ -36,10 +35,9 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// Response interceptor
 axiosInstance.interceptors.response.use(
     (response) => {
-        console.log('Response received:', response.status); // Debug log
+        console.log('Response received:', response.status); 
         return response;
     },
     (error) => {
