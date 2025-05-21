@@ -14,6 +14,7 @@ import HomeStudentPage from "./components/Student/HomeStudentPage"
 import Login from "./components/Student/Login"
 import { Route, Routes } from 'react-router-dom'
 import Docket from "./components/Admin/Managerment/Docket"
+import { axiosInstance } from "./lib/axios"
 
 function App() {
   const { checkAdminAuth, isCheckAdminAuth } = adminStore()
@@ -27,6 +28,13 @@ function App() {
   if(isCheckAdminAuth || isCheckStudentAuth){
     return <div className="text-center p-8">Đang kiểm tra xác thực ...</div>
   }
+
+  useEffect(() => {
+    axiosInstance.get('/api/test')
+      .then(res => console.log('🔥 Test request success:', res.data))
+      .catch(err => console.error('🔥 Test request error:', err));
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <HeaderPage/>
