@@ -5,53 +5,38 @@
 //     withCredentials:true
 // })
 
+import axios from 'axios';
 
-import axios from "axios";
-
-const baseURL = import.meta.env.PROD 
-    ? "https://cdcs-be1.onrender.com"
-    : "http://localhost:8017";
-
-console.log('Current API URL:', baseURL);
-
-export const axiosInstance = axios.create({
-    baseURL,
+const axiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
     withCredentials: true,
-    timeout: 15000, 
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
     }
 });
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        console.log('Making request to:', config.url);
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {
-        console.error('Request Error:', error);
         return Promise.reject(error);
     }
 );
 
 axiosInstance.interceptors.response.use(
-    (response) => {
-        console.log('Response received:', response.status); 
-        return response;
-    },
+    (response) => response,
     (error) => {
-        if (error.response) {
-            console.error('Response Error:', {
-                status: error.response.status,
-                data: error.response.data,
-                headers: error.response.headers
-            });
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Error setting up request:', error.message);
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }
 );
+
+export default axiosInstance; 
